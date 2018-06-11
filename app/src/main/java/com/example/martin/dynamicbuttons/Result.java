@@ -161,36 +161,59 @@ public class Result extends AppCompatActivity {
 
 
         try {
-
             JSONObject jsonObj = new JSONObject(result);
             JSONArray jsonArray = jsonObj.getJSONArray(MACaddr);
 
+            /* Niza od temperaturi */
+            double[] myTempArray = new double[jsonArray.length()];
+            String[] temperature = new String[jsonArray.length()];
 
-            for (int i=0; i < jsonArray.length(); i++) {
+            /* Niza od timestamp */
 
-                JSONObject jsonSensor = jsonArray.getJSONObject(i);
-                TextView resultTextView = new TextView(this);
+            double[] myTimeArray = new double[jsonArray.length()];
+            String[] timestamp = new String[jsonArray.length()];
+            /* Convert string to date */
 
-                GraphView graph = (GraphView) findViewById(R.id.graph);
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
 
-                        new DataPoint(1, 1),
-                        new DataPoint(2, 1),
-                        new DataPoint(3, 1)
 
-                });
-                graph.addSeries(series);
+
+            for(int k=0; k <= jsonArray.length()-1;k++)
+            {
+                final JSONObject jsonRes = jsonArray.getJSONObject(k);
+                temperature[k] = jsonRes.getString("temp");
+                timestamp[k] = jsonRes.getString("timestamp");
+                // double time = Double.parseDouble(date);
+                double temp = Double.parseDouble(temperature[k]);
+                // myTimeArray[k] = time;
+                myTempArray[k] = temp;
+
             }
+
+            GraphView graph = (GraphView) findViewById(R.id.graph);
+
+
+
+
+            double y;
+            int x;
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+            for(int i=0; i<=jsonArray.length()-1;i++)
+            {
+                x=i;
+                y=myTempArray[i];
+                series.appendData(new DataPoint(x,y),true, jsonArray.length()-1);
+            }
+
+
+
+            graph.addSeries(series);
+            // graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(Context this,"HH:mm:ss");
 
 
 
         }
         catch (JSONException e) {
-            //some exception handler code.
+            
         }
-
-
-      //  TextView printId = (TextView) findViewById(R.id.textView);
-     //   printId.setText(newString);
     }
 }
