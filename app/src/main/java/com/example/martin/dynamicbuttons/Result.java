@@ -175,8 +175,8 @@ public class Result extends AppCompatActivity {
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
 
                         new DataPoint(1, 1),
-                        new DataPoint(1, 1),
-                        new DataPoint(1, 1)
+                        new DataPoint(2, 1),
+                        new DataPoint(3, 1)
 
                 });
                 graph.addSeries(series);
